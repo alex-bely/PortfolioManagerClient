@@ -29,14 +29,25 @@ namespace DAL
             return db.Companies.ToList();
         }
 
+
+        /// <summary>
+        /// Gets all Company items of certain user from database
+        /// </summary>
+        /// <returns>The list of Company items</returns>
+        public IList<Company> GetByUser(int id)
+        {
+            return db.Companies.Where(el=>el.ServerId==id).ToList();
+        }
+
+
         /// <summary>
         /// Gets one portfolio item by name
         /// </summary>
         /// <param name="name">Company name</param>
         /// <returns>Company item with certain name</returns>
-        public Company GetCompany(string name)
+        public Company GetCompany(string name, int id)
         {
-            return db.Companies.FirstOrDefault(p => p.CompanyName == name);
+            return db.Companies.FirstOrDefault(p => p.CompanyName == name && p.ServerId==id);
         }
 
         /// <summary>
@@ -67,6 +78,7 @@ namespace DAL
             {
                 element.CompanyName = item.CompanyName;
                 element.Amount = item.Amount;
+                element.ServerId = item.ServerId;
                 db.Entry(element).State = System.Data.Entity.EntityState.Modified;
                 return true;
             }
@@ -94,11 +106,8 @@ namespace DAL
         /// </summary>
         public void RemoveAll()
         {
-            using (var ctx = new CompanyContext())
-            {
-                IQueryable<Company> allItems = ctx.Companies;
-                ctx.Companies.RemoveRange(allItems);
-            }
+            IQueryable<Company> allItems = db.Companies;
+            db.Companies.RemoveRange(allItems);
         }
 
         /// <summary>

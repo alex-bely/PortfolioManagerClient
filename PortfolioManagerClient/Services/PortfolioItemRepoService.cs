@@ -28,7 +28,18 @@ namespace PortfolioManagerClient.Services
         /// <returns>The list of portfolio items</returns>
         public IList<PortfolioItemViewModel> GetAll()
         {
-            var temp= companyRepo.GetAll().Select(el=>new PortfolioItemViewModel() { ItemId = el.CompanyId, Symbol = el.CompanyName, SharesNumber = el.Amount }).ToList();
+            var temp= companyRepo.GetAll().Select(el=>new PortfolioItemViewModel() { ItemId = el.CompanyId, Symbol = el.CompanyName, SharesNumber = el.Amount,UserId=el.ServerId }).ToList();
+            return temp;
+        }
+
+        /// <summary>
+        /// Gets portfolio items of certain user from repository
+        /// </summary>
+        /// <param name="id">Id of the User</param>
+        /// <returns>The list of portfolio items</returns>
+        public IList<PortfolioItemViewModel> GetByUser(int id)
+        {
+            var temp = companyRepo.GetByUser(id).Select(el => new PortfolioItemViewModel() { ItemId = el.CompanyId, Symbol = el.CompanyName, SharesNumber = el.Amount, UserId = el.ServerId }).ToList();
             return temp;
         }
 
@@ -37,11 +48,11 @@ namespace PortfolioManagerClient.Services
         /// </summary>
         /// <param name="name">Company name</param>
         /// <returns>Portfolio item with certain name</returns>
-        public PortfolioItemViewModel GetCompany(string name)
+        public PortfolioItemViewModel GetCompany(string name, int id)
         {
-            var temp = companyRepo.GetCompany(name);
+            var temp = companyRepo.GetCompany(name, id);
             if(temp!=null)
-                return new PortfolioItemViewModel() { ItemId = temp.CompanyId, Symbol = temp.CompanyName, SharesNumber = temp.Amount };
+                return new PortfolioItemViewModel() { ItemId = temp.CompanyId, Symbol = temp.CompanyName, SharesNumber = temp.Amount, UserId=temp.ServerId };
             return null;
         }
 
@@ -51,7 +62,7 @@ namespace PortfolioManagerClient.Services
         /// <param name="item">Portfolio item</param>
         public void AddCompany(PortfolioItemViewModel item)
         {
-            companyRepo.AddCompany(new Company() { CompanyId = item.ItemId, CompanyName = item.Symbol, Amount = item.SharesNumber, ServerId = item.ItemId });
+            companyRepo.AddCompany(new Company() { CompanyId = item.ItemId, CompanyName = item.Symbol, Amount = item.SharesNumber, ServerId = item.UserId });
         }
 
         /// <summary>
@@ -60,7 +71,7 @@ namespace PortfolioManagerClient.Services
         /// <param name="item">Portfolio item with updated values</param>
         public void UpdateCompany(PortfolioItemViewModel item)
         {
-            companyRepo.UpdateCompany(new Company() { CompanyId = item.ItemId, CompanyName = item.Symbol, Amount = item.SharesNumber });
+            companyRepo.UpdateCompany(new Company() { CompanyId = item.ItemId, CompanyName = item.Symbol, Amount = item.SharesNumber, ServerId=item.UserId });
         }
 
         /// <summary>

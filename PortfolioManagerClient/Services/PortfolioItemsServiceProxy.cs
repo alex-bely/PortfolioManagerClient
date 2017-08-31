@@ -37,14 +37,18 @@ namespace PortfolioManagerClient.Services
         /// <returns>The list of portfolio items</returns>
         public IList<PortfolioItemViewModel> GetItems(int userId)
         {
-            var allItems = serv.GetAll();
+            var allItems = serv.GetByUser(userId);
             if(allItems.Count==0)
             {
                 Synchronize(userId);
-                allItems = serv.GetAll();
-                lastId = allItems.Last().ItemId;
+                allItems = serv.GetByUser(userId);
+                if (allItems.Count == 0)
+                    lastId = 1;
+                else
+                    lastId = allItems.Last().ItemId;
             }
-            lastId = allItems.Last().ItemId;
+            else
+                lastId = allItems.Last().ItemId;
             return allItems;
         }
 
@@ -55,7 +59,7 @@ namespace PortfolioManagerClient.Services
         /// <returns>Type: System.Threading.Tasks.Task</returns>
         public async Task CreateItemAsync(PortfolioItemViewModel item)
         {
-            if (serv.GetCompany(item.Symbol) != null)
+            if (serv.GetCompany(item.Symbol, item.UserId) != null)
                 return;
             item.ItemId = ++lastId;
             serv.AddCompany(item);
