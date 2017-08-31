@@ -12,6 +12,7 @@ namespace PortfolioManagerClient.Controllers
     {
         private readonly PortfolioItemsService _portfolioItemsService = new PortfolioItemsService();
         private readonly UsersService _usersService = new UsersService();
+        private readonly PortfolioItemsServiceProxy _serviceProxy = new PortfolioItemsServiceProxy();
 
         /// <summary>
         /// Returns all portfolio items for the current user.
@@ -20,7 +21,7 @@ namespace PortfolioManagerClient.Controllers
         public IList<PortfolioItemViewModel> Get()
         {
             var userId = _usersService.GetOrCreateUser();
-            return new PortfolioItemsServiceProxy().GetItems(userId);
+            return _serviceProxy.GetItems(userId);
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace PortfolioManagerClient.Controllers
         public void Put(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            new PortfolioItemsServiceProxy().UpdateItemAsync(portfolioItem);
+            _serviceProxy.UpdateItemAsync(portfolioItem);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace PortfolioManagerClient.Controllers
         /// <param name="id">The portfolio item identifier.</param>
         public void Delete(int id)
         {
-            new PortfolioItemsServiceProxy().DeleteItemAsync(id);
+            _serviceProxy.DeleteItemAsync(id);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace PortfolioManagerClient.Controllers
         public void Post(PortfolioItemViewModel portfolioItem)
         {
             portfolioItem.UserId = _usersService.GetOrCreateUser();
-            new PortfolioItemsServiceProxy().CreateItemAsync(portfolioItem);
+            _serviceProxy.CreateItemAsync(portfolioItem);
         }
     }
 }
