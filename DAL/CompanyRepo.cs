@@ -25,7 +25,7 @@ namespace DAL
         /// </summary>
         /// <returns>The list of Company items</returns>
         public IList<Company> GetAll()
-        {
+        {   
             return db.Companies.ToList();
         }
 

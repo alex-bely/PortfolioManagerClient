@@ -3,14 +3,22 @@
     // appends a row to the portfolio items table.
     // @parentSelector: selector to append a row to.
     // @obj: portfolio item object to append.
-    var appendRow = function(parentSelector, obj) {
+    var appendRow = function (parentSelector, obj) {
+        var price;
+        var stock = $.getJSON("/api/Stock/"+obj.Symbol, function (data) {
+            console.log(data.Price);
+            price = data.Price;
+        
+        
+        console.dir(price);
         var tr = $("<tr data-id='" + obj.ItemId + "'></tr>");
         tr.append("<td class='name' >" + obj.Symbol + "</td>");
         tr.append("<td class='name' >" + obj.SharesNumber + "</td>");
-        tr.append("<td class='name' >" + "Downloaded value" + "</td>");
-        tr.append("<td class='name' >" + "Downloaded value *" + obj.SharesNumber + "</td>");
+        tr.append("<td class='name' >" + price + "</td>");
+        tr.append("<td class='name' >" + price * obj.SharesNumber + "</td>");
         tr.append("<td><input type='button' class='update-button btn btn-default' value='Update' /><input type='button' class='delete-button btn btn-default' value='Delete' /></td>");
         $(parentSelector).append(tr);
+        });
     }
 
     // adds all portfolio items as rows (deletes all rows before).
@@ -28,6 +36,8 @@
     var loadPortfolioItems = function() {
         return $.getJSON("/api/portfolioitems");
     };
+
+    
 
     // starts creating a portfolio item on the server.
     // @symbol: symbol name.

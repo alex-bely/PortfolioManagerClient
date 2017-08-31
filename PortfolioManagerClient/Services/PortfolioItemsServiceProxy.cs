@@ -1,7 +1,9 @@
-﻿using PortfolioManagerClient.Models;
+﻿using Newtonsoft.Json.Linq;
+using PortfolioManagerClient.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -91,6 +93,7 @@ namespace PortfolioManagerClient.Services
         /// <param name="userId">The User Id.</param>
         public void Synchronize(int userId)
         {
+
             serv.RemoveAll();
             var temp = _portfolioItemsService.GetItems(userId).ToList();
             foreach (var elem in temp)
@@ -99,6 +102,8 @@ namespace PortfolioManagerClient.Services
             }
             serv.Commit();
         }
+
+        
 
 
     }
