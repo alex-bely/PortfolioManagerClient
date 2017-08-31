@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio Manager</title>
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" type="text/css" href="Styles/site.css">
+    <link rel="stylesheet" type="text/css" href="Content/bootstrap.css" />
+
+    <script src="Scripts/jquery-3.1.0.js" language="javascript"></script>
+    <script src="Scripts/portfolioManager.js" language="javascript"></script>
+    
+</head>
+<body>
+    <table id="items" class="table">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Number of shares</th>
+                <th>Cost</th>
+                <th>Total cost</th>
+                <th>Actions</th>
+            </tr>
+            <!-- The row for creating new items. -->
+            <tr id="new">
+                <td><input type='text' class="form-control" id="symbol" /></td>
+                <td><input type='text'  class="form-control" id="sharesNumber" /></td>
+                <td></td>
+                <td></td>
+                <td><input type='button' id="newCreate" value='Create' class="btn btn-default"/></td>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+</html>
